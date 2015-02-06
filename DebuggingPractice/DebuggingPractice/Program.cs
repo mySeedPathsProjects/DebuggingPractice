@@ -20,10 +20,12 @@ namespace DebuggingPractice
         {
             int counter = 0;
             // loop through each character
-            for (int i = 1; i < input.Length; i++)
+    //****int i has to equal 0***
+            for (int i = 0; i < input.Length; i++)
             {
                 // check if it's a t
-                if (input[i] == 't')
+    //****checked the string t against input[i] w/ ToString and ToLower****
+                if ("t" == input[i].ToString().ToLower())
                 {
                     // true so add to the number of t's
                     counter++;
@@ -32,6 +34,7 @@ namespace DebuggingPractice
             // return the number of t's
             return counter;
         }
+
         /// <summary>
         /// A palindrome is a word or phrase that can be spelled the same
         /// both backwards and forwards. This function will determine if an
@@ -46,7 +49,8 @@ namespace DebuggingPractice
             {
                 // check the character with it's partner
                 // on the other end of the string
-                if (input[i] == input[2])
+    //*****changed second to [(input.Length-1)-i], added .ToString().ToLower() to each and made == !=
+                if (input[i].ToString().ToLower() != input[(input.Length-1)-i].ToString().ToLower())
                 {
                     // if there ever isn't a match then the string
                     // is not a palindrome
@@ -56,6 +60,7 @@ namespace DebuggingPractice
             // Must be a palindrome since it never failed before
             return true;
         }
+
         /// <summary>
         /// A function that checks if an input string is a valid ISBN number.
         /// </summary>
@@ -68,40 +73,79 @@ namespace DebuggingPractice
             // int used for holding the sum
             int resultNum = 0;
             // loop through each number
-            for (int i = 0; i < number.Length; i+=2)
+    //***change i+=2 to i++
+            for (int i = 0; i < number.Length; i++)
             {
                 // do the calculation for ISBN by multiplying each number
                 // by it's order in the string and summing the results up
-                resultNum = number[i] * (number.Length - i);
+    //***made = to +=  
+                resultNum += number[i] * (number.Length - i);
             }
             // true if the sum is divisible by 11
-            return resultNum * 11 == 0;
+    //***changed * to %
+            return resultNum % 11 == 0;
         }
+
+
         /// <summary>
         /// A panagram is a string that contains each letter of the alphabet at least once.
         /// This function will return true if the input string is a panagram.
         /// </summary>
         /// <param name="input">string to test</param>
         /// <returns>true if is a panagram</returns>
+        public static bool IsPanagram_(string input)
+        {
+            //List<string> alphabet = new List<string>();
+    //***made an alphabet string will all letters of alphabet to check
+    //***made new string that copies input string, except in all Lowercase
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            string inputLower = input.ToLower();
+            // loop through each letter in the input string
+            for (int i = 0; i < input.Length; i++)
+            {
+                // letter validation
+                if (char.IsLetter(input[i]))
+                {
+    //***made nested for loop to check each letter of the input with every letter in alphabet
+                    for (int j = 0; j < alphabet.Length; j++)
+                    {
+                    // only add the letter if it doesn't exist in the list
+                    //if (alphabet.Contains(input[i].ToString()))
+    //***if the input does not contain every letter of the 
+                        if (!inputLower.Contains(alphabet[j].ToString().ToLower()))
+                        {
+                        // add the letter to the list
+                        //alphabet.Add(input[i].ToString());
+                            return false;
+                        }
+                    }
+                }
+            }
+            // return true if all letters in the alphabet are contained
+            //return alphabet.Count == 36;
+            return true;
+        }
+
+        //much faster way
         public static bool IsPanagram(string input)
         {
             List<string> alphabet = new List<string>();
             // loop through each letter in the input string
-            for (int i = 1; i < input.Length-1; i++)
+            for (int i = 0; i < input.Length; i++)
             {
                 // letter validation
                 if (char.IsLetter(input[i]))
                 {
                     // only add the letter if it doesn't exist in the list
-                    if (alphabet.Contains(input[i].ToString()))
+                    if (!alphabet.Contains(input[i].ToString().ToLower()))
                     {
                         // add the letter to the list
-                        alphabet.Add(input[i].ToString());
+                        alphabet.Add(input[i].ToString().ToLower());
                     }
                 }
             }
             // return true if all letters in the alphabet are contained
-            return alphabet.Count == 36;
+            return alphabet.Count == 26;
         }
     }
 }
